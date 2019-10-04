@@ -55,14 +55,14 @@ This tap:
 
     ```json
     {
-    "secret_key": "YOUR_SECRET_KEY",
-    "language": "en",
-    "units": "us",
-    "location_list_1": "38.840544, -105.0444233; 45.587467, -122.404503",
-    "location_list_2": "45.304104, -121.754761; 39.191097, -106.817535",
-    "location_list_3": "27.988121, 86.924973; 44.039170, -121.333700",
-    "start_date": "2019-01-01T00:00:00Z",
-    "user_agent": "tap-darksky <api_user_email@your_company.com>"
+        "secret_key": "YOUR_SECRET_KEY",
+        "language": "en",
+        "units": "us",
+        "location_list_1": "38.840544, -105.0444233; 45.587467, -122.404503",
+        "location_list_2": "45.304104, -121.754761; 39.191097, -106.817535",
+        "location_list_3": "27.988121, 86.924973; 44.039170, -121.333700",
+        "start_date": "2019-01-01T00:00:00Z",
+        "user_agent": "tap-darksky <api_user_email@your_company.com>"
     }
     ```
     **NOTE**: Each `location` for each `forecast_date` is a separate API call. Therefore, `start_date` and  `location_list` values impact the API call usage (and charges, if subscribed). The `free` plan is limited to 1000 API calls/day. The tap will error if the allowed API calls are exceeded for `free` plan accounts.
@@ -71,12 +71,15 @@ This tap:
 
     ```json
     {
-        "currently_syncing": "forecast",
+        "currently_syncing": null,
         "bookmarks": {
             "forecast": {
-                "44.039170,-121.333700": "2019-10-01T00:00:00Z",
-                "27.988121,86.924973": "2019-10-04T00:00:00Z",
-                "39.191097,-106.817535": "2019-10-03T00:00:00Z"
+            "45.304104,-121.754761": "2019-10-04T00:00:00.000000Z",
+            "38.840544,-105.0444233": "2019-10-04T00:00:00.000000Z",
+            "45.587467,-122.404503": "2019-10-04T00:00:00.000000Z",
+            "39.191097,-106.817535": "2019-10-04T00:00:00.000000Z",
+            "44.039170,-121.333700": "2019-10-04T00:00:00.000000Z",
+            "27.988121,86.924973": "2019-10-04T00:00:00.000000Z"
             }
         }
     }
