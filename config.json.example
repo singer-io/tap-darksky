@@ -1,0 +1,10 @@
+{
+  "secret_key": "YOUR_SECRET_KEY",
+  "language": "en",
+  "units": "us",
+  "location_list_1": "38.840544, -105.0444233; 45.587467, -122.404503",
+  "location_list_2": "45.304104, -121.754761; 39.191097, -106.817535",
+  "location_list_3": "27.988121, 86.924973; 44.039170, -121.333700",
+  "start_date": "2019-01-01T00:00:00Z",
+  "user_agent": "tap-darksky <api_user_email@your_company.com>"
+}
