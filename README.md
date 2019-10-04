@@ -15,7 +15,7 @@ This tap:
 ## Streams
 
 [forecast](https://darksky.net/dev/docs#time-machine-request)
-- Endpoint: https://api.darksky.net/forecast/{SECRET_KEY}/{latitude,longitued},{bookmark-datetime}?exclude=currently,minutely
+- Endpoint: https://api.darksky.net/forecast/{SECRET_KEY}/{latitude,longitude},{bookmark-datetime}?exclude=currently,minutely
 - Primary key fields: latitude, longitude, forecast_date
 - Foreign key fields: None
 - Replication strategy: INCREMENTAL (query filtered)
