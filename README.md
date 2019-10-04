@@ -6,11 +6,11 @@ spec](https://github.com/singer-io/getting-started/blob/master/SPEC.md).
 
 This tap:
 
-- Pulls raw data from the [Darksky API](https://darksky.net/dev/docs#overview)
+- Pulls raw data from the [Darksky Weather API](https://darksky.net/dev/docs#overview)
 - Extracts the following resource:
   - [Forecast](https://darksky.net/dev/docs#time-machine-request)
-- Outputs the schema for each resource
-- Incrementally pulls data based on the input state
+- Outputs the schema for the resource
+- Incrementally pulls data based on the input state for each `location`.
 
 ## Streams
 
@@ -50,7 +50,7 @@ This tap:
     - [singer-tools](https://github.com/singer-io/singer-tools)
     - [target-stitch](https://github.com/singer-io/target-stitch)
 
-3. Create your tap's `config.json` file. The `start_date` is the absolute minimum date for collecing weather data from your locations. The `user_agent` should list the tap-name and API user email address (for API logging purposes). The `secret_key` may be obtained from [Darksky.net](https://darksky.net/dev) with a free account (limited to 1000 API calls/day) or a subscription account (paying for additional API calls). The `languge` should be the 2-letter code of one of the supported [translation languages](https://github.com/darkskyapp/translations/tree/master/lib/lang); `en` is default.  The `units` should be the 2-letter code for the desired measurement units: `si`, `us`, `auto`, `uk2`, or `ca`; default is `auto`. The `location_list_1,2,3` are for storing lists of geo-locations in the format with comma separating latitude,longitude and semicolon separating each location: 
+3. Create your tap's `config.json` file. The `start_date` is the absolute minimum date for collecing weather data from your locations. The `user_agent` should list the tap-name and API user email address (for API logging purposes). The `secret_key` may be obtained from [Darksky.net](https://darksky.net/dev) with a free account (limited to 1000 API calls/day) or a subscription account (paying for additional API calls). The `languge` should be the 2-letter code of one of the supported [translation languages](https://github.com/darkskyapp/translations/tree/master/lib/lang); `en` is default.  The `units` should be the 2-letter code for the desired measurement units: `si`, `us`, `auto`, `uk2`, or `ca`; default is `auto`. The `location_list_1,2,3` are for storing lists of geo-locations in the format with comma separating latitude,longitude and semicolon separating each location. There are 3 `location_list` config fields because the Stitch UI is limited to text-area config parameters of `varchar(16384)`, or 5461 characters for each list, each holding approximately 227 locations (lat,lon; with no spaces and 6-digit decimal precision); for a total of about 681 locations. The tap will remove any space and non-numerical characters. Format for lists:
 `latitude_1,longitude_1;latitude_2,longitude_2;latitude_3,longitude_3;...` 
 
     ```json
@@ -65,8 +65,9 @@ This tap:
     "user_agent": "tap-darksky <api_user_email@your_company.com>"
     }
     ```
-    
-    Optionally, also create a `state.json` file. `currently_syncing` is an optional attribute used for identifying the last object to be synced in case the job is interrupted mid-stream. The next run would begin where the last job left off. For this tap, each `location` is bookmarked.
+    **NOTE**: Each `location` for each `forecast_date` is a separate API call. Therefore, `start_date` and  `location_list` values impact the API call usage (and charges, if subscribed). The `free` plan is limited to 1000 API calls/day. The tap will error if the allowed API calls are exceeded for `free` plan accounts.
+
+    Optionally, create a `state.json` file. `currently_syncing` is an optional attribute used for identifying the last object to be synced in case the job is interrupted mid-stream. The next run would begin where the last job left off. For this tap, each `location` is bookmarked. If a new `location` is added to an existing tap, only the new `location` will be synced from the `start_date`. All other `locations` will continue to sync from the `bookmark` date.
 
     ```json
     {
@@ -86,6 +87,7 @@ This tap:
     ```bash
     tap-darksky --config config.json --discover > catalog.json
     ```
+   Additionally, the tap provides a query parameter for `excludes` if `daily`, `hourly`, or `flags` are de-selected in Discovery mode.
    See the Singer docs on discovery mode
    [here](https://github.com/singer-io/getting-started/blob/master/docs/DISCOVERY_MODE.md#discovery-mode).
 
