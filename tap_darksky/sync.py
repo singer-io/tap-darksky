@@ -193,21 +193,15 @@ def sync(client, config, catalog, state):
     language = config.get('language', 'en')
     units = config.get('units', 'auto')
 
-    # Stitch UI config parameters may be text areas, but are limited to varchar(16384), 5461 chars
-    # location_list_1, 2, 3 each allow up to 5461 chars
-    # locations_lists should be delimited like: lat1,lon1;lat2,lon2;lat3,lon3
-    #   commas separating lat,lon and semicolons separating locations
-    locations_1 = config.get('location_list_1')
-    locations_2 = config.get('location_list_2')
-    locations_3 = config.get('location_list_3')
-    # Combine lists together, delimited by semicolon
-    locations_123 = ('{}{}{}'.format(
-        '{}'.format(locations_1) if locations_1 else '',
-        ';{}'.format(locations_2) if locations_2 else '',
-        ';{}'.format(locations_3) if locations_3 else ''))
+    # Stitch UI config parameters may be text areas, but limited to varchar(16384), 5461 chars,
+    #   approx. 227 lat,lon locations (without spaces, 6-digit precision)
+    # locations_list should be delimited like: lat1,lon1;lat2,lon2;lat3,lon3
+    #   commas separating lat,lon and semicolons ; separating locations
+    locations = config.get('location_list')
+
     # Remove non-numeric chars except commas, semicolons, minus signs
     #   and Split to list of locations by semicolon
-    location_list = re.sub('[^0-9,.;-]', '', locations_123).split(";")
+    location_list = re.sub('[^0-9,.;-]', '', locations).split(";")
 
     # Get selected_streams from catalog, based on state last_stream
     #   last_stream = Previous currently synced stream, if the load was interrupted
