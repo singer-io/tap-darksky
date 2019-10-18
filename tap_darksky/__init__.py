@@ -15,7 +15,7 @@ REQUIRED_CONFIG_KEYS = [
     'secret_key',
     'language',
     'units',
-    'location_list_1',
+    'location_list',
     'start_date',
     'user_agent'
 ]

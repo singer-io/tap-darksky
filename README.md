@@ -45,12 +45,11 @@ This tap:
     > pip install singer-tools
     > pip install target-stitch
     > pip install target-json
-    
     ```
     - [singer-tools](https://github.com/singer-io/singer-tools)
     - [target-stitch](https://github.com/singer-io/target-stitch)
 
-3. Create your tap's `config.json` file. The `start_date` is the absolute minimum date for collecing weather data from your locations. The `user_agent` should list the tap-name and API user email address (for API logging purposes). The `secret_key` may be obtained from [Darksky.net](https://darksky.net/dev) with a free account (limited to 1000 API calls/day) or a subscription account (paying for additional API calls). The `languge` should be the 2-letter code of one of the supported [translation languages](https://github.com/darkskyapp/translations/tree/master/lib/lang); `en` is default.  The `units` should be the 2-letter code for the desired measurement units: `si`, `us`, `auto`, `uk2`, or `ca`; default is `auto`. The `location_list_1,2,3` are for storing lists of geo-locations in the format with comma separating latitude,longitude and semicolon separating each location. There are 3 `location_list` config fields because the Stitch UI is limited to text-area config parameters of `varchar(16384)`, or 5461 characters for each list, each holding approximately 227 locations (lat,lon; with no spaces and 6-digit decimal precision); for a total of about 681 locations. The tap will remove any space and non-numerical characters. Format for lists:
+3. Create your tap's `config.json` file. The `start_date` is the absolute minimum date for collecing weather data from your locations. The `user_agent` should list the tap-name and API user email address (for API logging purposes). The `secret_key` may be obtained from [Darksky.net](https://darksky.net/dev) with a free account (limited to 1000 API calls/day) or a subscription account (paying for additional API calls). The `languge` should be the 2-letter code of one of the supported [translation languages](https://github.com/darkskyapp/translations/tree/master/lib/lang); `en` is default.  The `units` should be the 2-letter code for the desired measurement units: `si`, `us`, `auto`, `uk2`, or `ca`; default is `auto`. The `location_list` stores a list of geo-locations in the format with comma separating latitude,longitude and semicolon separating each location. The `location_list` config field in the Stitch UI is limited to text-area config parameters of `varchar(16384)`, or 5461 characters, which is approximately 227 locations (lat,lon; with no spaces and 6-digit decimal precision). The tap will remove any space and non-numerical characters. Format for lists:
 `latitude_1,longitude_1;latitude_2,longitude_2;latitude_3,longitude_3;...` 
 
     ```json
@@ -58,9 +57,7 @@ This tap:
         "secret_key": "YOUR_SECRET_KEY",
         "language": "en",
         "units": "us",
-        "location_list_1": "38.840544, -105.0444233; 45.587467, -122.404503",
-        "location_list_2": "45.304104, -121.754761; 39.191097, -106.817535",
-        "location_list_3": "27.988121, 86.924973; 44.039170, -121.333700",
+        "location_list": "38.840544, -105.0444233; 45.587467, -122.404503; 45.304104, -121.754761; 39.191097, -106.817535",
         "start_date": "2019-01-01T00:00:00Z",
         "user_agent": "tap-darksky <api_user_email@your_company.com>"
     }
@@ -77,9 +74,7 @@ This tap:
             "45.304104,-121.754761": "2019-10-04T00:00:00.000000Z",
             "38.840544,-105.0444233": "2019-10-04T00:00:00.000000Z",
             "45.587467,-122.404503": "2019-10-04T00:00:00.000000Z",
-            "39.191097,-106.817535": "2019-10-04T00:00:00.000000Z",
-            "44.039170,-121.333700": "2019-10-04T00:00:00.000000Z",
-            "27.988121,86.924973": "2019-10-04T00:00:00.000000Z"
+            "39.191097,-106.817535": "2019-10-04T00:00:00.000000Z"
             }
         }
     }
