@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+  * Dependabot update [#6](https://github.com/singer-io/tap-darksky/pull/6)
+
 ## 1.0.0
   * Preparing for v1.0.0 release
 
